@@ -10,7 +10,7 @@ class UpdateUser extends StatelessWidget {
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: [Color(0xFF6A11CB), Color(0xFF2575FC)],
+            colors: [Color(0xFF908F91), Color(0xFF86B786)],
           ),
         ),
         child: Center(
