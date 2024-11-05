@@ -3,7 +3,6 @@ import 'package:restofatlem_14624/services/user_service.dart';
 import 'models/user_model.dart';
 
 class UpdateUser extends StatefulWidget {
-  // Menghapus currentUsername parameter karena akan mengambil dari getCurrentUser
   const UpdateUser({Key? key}) : super(key: key);
 
   @override
@@ -45,7 +44,6 @@ class _UpdateUserState extends State<UpdateUser> {
           _nameController.text = currentUser.name;
           _usernameController.text = currentUser.username;
           _currentUsername = currentUser.username;
-          // Not displaying password for security reasons
         });
       }
     } catch (e) {
@@ -79,7 +77,7 @@ class _UpdateUserState extends State<UpdateUser> {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Update successful!')),
         );
-        Navigator.pop(context); // Go back after successful update
+        Navigator.pop(context);
       }
     } catch (e) {
       if (mounted) {
@@ -96,101 +94,151 @@ class _UpdateUserState extends State<UpdateUser> {
 
   @override
   Widget build(BuildContext context) {
-    if (_isLoading && _currentUsername == null) {
-      return const Scaffold(
-        body: Center(
-          child: CircularProgressIndicator(),
-        ),
-      );
-    }
-
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Update Profile'),
-        backgroundColor: const Color(0xFFCCB69A),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () => Navigator.pop(context),
         ),
       ),
-      body: SingleChildScrollView(
-        child: Container(
-          padding: const EdgeInsets.all(24.0),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                const Text(
-                  'Update Your Account',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(height: 30),
-                TextFormField(
-                  controller: _nameController,
-                  decoration: const InputDecoration(
-                    labelText: 'Name',
-                    border: OutlineInputBorder(),
+      extendBodyBehindAppBar: true,
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [Color(0xFF908F91), Color(0xFF86B786)],
+          ),
+        ),
+        child: Center(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.all(24.0),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  const Icon(
+                    Icons.person_outline,
+                    color: Colors.white,
+                    size: 80,
                   ),
-                  validator: (value) {
-                    if (value?.isEmpty ?? true) {
-                      return 'Please enter your name';
-                    }
-                    return null;
-                  },
-                ),
-                const SizedBox(height: 20),
-                TextFormField(
-                  controller: _usernameController,
-                  decoration: const InputDecoration(
-                    labelText: 'Username',
-                    border: OutlineInputBorder(),
+                  const SizedBox(height: 20),
+                  const Text(
+                    'Update Profile',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 28,
+                      fontFamily: 'JetBrainsMono',
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                  validator: (value) {
-                    if (value?.isEmpty ?? true) {
-                      return 'Please enter a username';
-                    }
-                    return null;
-                  },
-                ),
-                const SizedBox(height: 20),
-                TextFormField(
-                  controller: _passwordController,
-                  decoration: const InputDecoration(
-                    labelText: 'New Password (optional)',
-                    border: OutlineInputBorder(),
-                  ),
-                  obscureText: true,
-                  validator: (value) {
-                    if (value?.isNotEmpty ?? false) {
-                      if ((value?.length ?? 0) < 6) {
-                        return 'Password must be at least 6 characters';
+                  const SizedBox(height: 30),
+                  TextFormField(
+                    controller: _nameController,
+                    decoration: InputDecoration(
+                      prefixIcon: const Icon(Icons.person, color: Colors.black54),
+                      filled: true,
+                      fillColor: Colors.white,
+                      labelText: 'Name',
+                      labelStyle: const TextStyle(
+                        color: Colors.black54,
+                        fontFamily: 'JetBrainsMono',
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(30.0),
+                        borderSide: BorderSide.none,
+                      ),
+                    ),
+                    validator: (value) {
+                      if (value?.isEmpty ?? true) {
+                        return 'Please enter your name';
                       }
-                    }
-                    return null;
-                  },
-                ),
-                const SizedBox(height: 30),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFFCCB69A),
-                    padding: const EdgeInsets.symmetric(vertical: 15),
+                      return null;
+                    },
                   ),
-                  onPressed: _isLoading ? null : _updateUser,
-                  child: _isLoading
-                      ? const SizedBox(
-                    height: 20,
-                    width: 20,
-                    child: CircularProgressIndicator(strokeWidth: 2),
-                  )
-                      : const Text(
-                    'Update',
-                    style: TextStyle(fontSize: 16),
+                  const SizedBox(height: 20),
+                  TextFormField(
+                    controller: _usernameController,
+                    decoration: InputDecoration(
+                      prefixIcon: const Icon(Icons.account_circle, color: Colors.black54),
+                      filled: true,
+                      fillColor: Colors.white,
+                      labelText: 'Username',
+                      labelStyle: const TextStyle(
+                        color: Colors.black54,
+                        fontFamily: 'JetBrainsMono',
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(30.0),
+                        borderSide: BorderSide.none,
+                      ),
+                    ),
+                    validator: (value) {
+                      if (value?.isEmpty ?? true) {
+                        return 'Please enter a username';
+                      }
+                      return null;
+                    },
                   ),
-                ),
-              ],
+                  const SizedBox(height: 20),
+                  TextFormField(
+                    controller: _passwordController,
+                    decoration: InputDecoration(
+                      prefixIcon: const Icon(Icons.lock, color: Colors.black54),
+                      filled: true,
+                      fillColor: Colors.white,
+                      labelText: 'New Password (optional)',
+                      labelStyle: const TextStyle(
+                        color: Colors.black54,
+                        fontFamily: 'JetBrainsMono',
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(30.0),
+                        borderSide: BorderSide.none,
+                      ),
+                    ),
+                    obscureText: true,
+                    validator: (value) {
+                      if (value?.isNotEmpty ?? false) {
+                        if ((value?.length ?? 0) < 6) {
+                          return 'Password must be at least 6 characters';
+                        }
+                      }
+                      return null;
+                    },
+                  ),
+                  const SizedBox(height: 30),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.white,
+                      foregroundColor: const Color(0xFF2575FC),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30.0),
+                      ),
+                      padding: const EdgeInsets.symmetric(vertical: 15),
+                    ),
+                    onPressed: _isLoading ? null : _updateUser,
+                    child: _isLoading
+                        ? const SizedBox(
+                      height: 20,
+                      width: 20,
+                      child: CircularProgressIndicator(),
+                    )
+                        : const Text(
+                      'Update Profile',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontFamily: 'JetBrainsMono',
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
