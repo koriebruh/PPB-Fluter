@@ -52,40 +52,26 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   Future<void> _launchWhatsApp(BuildContext context, String phone, {String message = '', bool isCall = false}) async {
     try {
-      // Bersihkan nomor telepon dari karakter non-numerik
       phone = phone.replaceAll(RegExp(r'[^\d]'), '');
+      String url;
 
-      if (isCall) {
-        // Untuk panggilan telepon
-        final Uri callUri = Uri.parse('tel:$phone');
-        if (await canLaunchUrl(callUri)) {
-          await launchUrl(callUri);
-          return;
+      if (Platform.isAndroid) {
+        if (isCall) {
+          url = "whatsapp://send?phone=$phone&text=Halo";
+        } else {
+          url = "whatsapp://send?phone=$phone&text=${Uri.encodeComponent(message)}";
         }
       } else {
-        // Untuk pesan WhatsApp
-        String url;
-        if (Platform.isAndroid) {
-          url = "https://wa.me/$phone/?text=${Uri.encodeComponent(message)}";
-        } else if (Platform.isIOS) {
-          url = "https://api.whatsapp.com/send?phone=$phone&text=${Uri.encodeComponent(message)}";
-        } else {
-          url = "https://web.whatsapp.com/send?phone=$phone&text=${Uri.encodeComponent(message)}";
-        }
-
-        final Uri whatsappUri = Uri.parse(url);
-        if (await canLaunchUrl(whatsappUri)) {
-          await launchUrl(
-            whatsappUri,
-            mode: LaunchMode.externalApplication,
-          );
-          return;
-        }
+        // Fallback untuk platform lain
+        url = "https://wa.me/$phone/?text=${Uri.encodeComponent(message)}";
       }
 
-      // Jika sampai di sini berarti tidak bisa launch
-      _showErrorDialog(context, 'Could not launch WhatsApp. Please make sure WhatsApp is installed.');
-
+      final Uri whatsappUri = Uri.parse(url);
+      if (await canLaunchUrl(whatsappUri)) {
+        await launchUrl(whatsappUri, mode: LaunchMode.externalApplication);
+      } else {
+        _showErrorDialog(context, 'WhatsApp tidak terinstall');
+      }
     } catch (e) {
       _showErrorDialog(context, 'Error: ${e.toString()}');
     }
@@ -96,21 +82,30 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       final String googleMapsUrl;
 
       if (Platform.isAndroid) {
-        googleMapsUrl = 'geo:0,0?q=restaurants+near+me';
-      } else if (Platform.isIOS) {
-        googleMapsUrl = 'maps://maps.google.com?q=restaurants+near+me';
-      } else {
-        googleMapsUrl = 'https://www.google.com/maps/search/restaurants+near+me';
-      }
+        googleMapsUrl = 'google.navigation:q=restaurants+near+me';
+        final Uri mapsUri = Uri.parse(googleMapsUrl);
 
-      final Uri mapsUri = Uri.parse(googleMapsUrl);
-      if (await canLaunchUrl(mapsUri)) {
-        await launchUrl(
-          mapsUri,
-          mode: LaunchMode.externalApplication,
-        );
+        if (await canLaunchUrl(mapsUri)) {
+          await launchUrl(mapsUri, mode: LaunchMode.externalApplication);
+        } else {
+          // Fallback ke browser jika aplikasi Maps tidak tersedia
+          final String fallbackUrl = 'https://www.google.com/maps/search/restaurants+near+me';
+          final Uri fallbackUri = Uri.parse(fallbackUrl);
+          if (await canLaunchUrl(fallbackUri)) {
+            await launchUrl(fallbackUri, mode: LaunchMode.externalApplication);
+          } else {
+            _showErrorDialog(context, 'Tidak dapat membuka Maps');
+          }
+        }
       } else {
-        _showErrorDialog(context, 'Could not launch Maps');
+        // Fallback untuk platform lain
+        googleMapsUrl = 'https://www.google.com/maps/search/restaurants+near+me';
+        final Uri mapsUri = Uri.parse(googleMapsUrl);
+        if (await canLaunchUrl(mapsUri)) {
+          await launchUrl(mapsUri, mode: LaunchMode.externalApplication);
+        } else {
+          _showErrorDialog(context, 'Tidak dapat membuka Maps');
+        }
       }
     } catch (e) {
       _showErrorDialog(context, 'Error: ${e.toString()}');
