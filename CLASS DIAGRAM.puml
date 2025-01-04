@@ -1,0 +1,195 @@
+@startuml
+set namespaceSeparator ::
+
+class "jamal_14616::app_bar.dart::CustomAppBar" {
+  +Size preferredSize
+  +Widget build()
+  -dynamic _launchWhatsApp()
+  -dynamic _launchMaps()
+  -void _showErrorDialog()
+  -void _logout()
+}
+
+"jamal_14616::app_bar.dart::CustomAppBar" o-- "dart::ui::Size"
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "jamal_14616::app_bar.dart::CustomAppBar"
+"flutter::src::widgets::preferred_size.dart::PreferredSizeWidget" <|-- "jamal_14616::app_bar.dart::CustomAppBar"
+
+class "jamal_14616::cart.dart::Cart" {
+  +List<Map<String, dynamic>> cartItems
+  +_CartState createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "jamal_14616::cart.dart::Cart"
+
+class "jamal_14616::cart.dart::_CartState" {
+  -void _removeItem()
+  -void _decreaseQuantity()
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::State" <|-- "jamal_14616::cart.dart::_CartState"
+
+class "jamal_14616::checkout.dart::Checkout" {
+  +Widget build()
+  -Widget _buildTextField()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "jamal_14616::checkout.dart::Checkout"
+
+class "jamal_14616::dashboard.dart::Dashboard" {
+  +_DashboardState createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "jamal_14616::dashboard.dart::Dashboard"
+
+class "jamal_14616::dashboard.dart::_DashboardState" {
+  +bool showProductList
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::State" <|-- "jamal_14616::dashboard.dart::_DashboardState"
+
+class "jamal_14616::login.dart::Login" {
+  +_LoginState createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "jamal_14616::login.dart::Login"
+
+class "jamal_14616::login.dart::_LoginState" {
+  -GlobalKey<FormState> _formKey
+  -UserService _userService
+  -TextEditingController _usernameController
+  -TextEditingController _passwordController
+  -bool _isLoading
+  -dynamic _login()
+  +Widget build()
+}
+
+"jamal_14616::login.dart::_LoginState" o-- "flutter::src::widgets::framework.dart::GlobalKey<FormState>"
+"jamal_14616::login.dart::_LoginState" o-- "jamal_14616::services::user_service.dart::UserService"
+"jamal_14616::login.dart::_LoginState" o-- "flutter::src::widgets::editable_text.dart::TextEditingController"
+"flutter::src::widgets::framework.dart::State" <|-- "jamal_14616::login.dart::_LoginState"
+
+class "jamal_14616::main.dart::MyApp" {
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "jamal_14616::main.dart::MyApp"
+
+class "jamal_14616::models::user_model.dart::User" {
+  +String name
+  +String username
+  +String password
+  +Map<String, dynamic> toJson()
+}
+
+class "jamal_14616::payment.dart::Payment" {
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "jamal_14616::payment.dart::Payment"
+
+class "jamal_14616::product.dart::Product" {
+  +String name
+  +String description
+  +double price
+  +String imageUrl
+}
+
+class "jamal_14616::product_description.dart::ProductDescription" {
+  +Product product
+  +Widget build()
+}
+
+"jamal_14616::product_description.dart::ProductDescription" o-- "jamal_14616::product.dart::Product"
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "jamal_14616::product_description.dart::ProductDescription"
+
+class "jamal_14616::product_list.dart::ProductList" {
+  +_ProductListState createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "jamal_14616::product_list.dart::ProductList"
+
+class "jamal_14616::product_list.dart::_ProductListState" {
+  +List<Map<String, dynamic>> cartItems
+  +List<Product> products
+  +List<int> quantities
+  +void addToCart()
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::State" <|-- "jamal_14616::product_list.dart::_ProductListState"
+
+class "jamal_14616::register.dart::Register" {
+  +_RegisterState createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "jamal_14616::register.dart::Register"
+
+class "jamal_14616::register.dart::_RegisterState" {
+  -GlobalKey<FormState> _formKey
+  -UserService _userService
+  -TextEditingController _nameController
+  -TextEditingController _usernameController
+  -TextEditingController _passwordController
+  -bool _isLoading
+  -dynamic _register()
+  +Widget build()
+}
+
+"jamal_14616::register.dart::_RegisterState" o-- "flutter::src::widgets::framework.dart::GlobalKey<FormState>"
+"jamal_14616::register.dart::_RegisterState" o-- "jamal_14616::services::user_service.dart::UserService"
+"jamal_14616::register.dart::_RegisterState" o-- "flutter::src::widgets::editable_text.dart::TextEditingController"
+"flutter::src::widgets::framework.dart::State" <|-- "jamal_14616::register.dart::_RegisterState"
+
+class "jamal_14616::services::user_service.dart::UserService" {
+  {static} -String _userKey
+  +dynamic getUsers()
+  +dynamic registerUser()
+  +dynamic login()
+  +dynamic updateUser()
+  +dynamic logout()
+  +dynamic getCurrentUser()
+}
+
+class "jamal_14616::update_user.dart::UpdateUser" {
+  +State<UpdateUser> createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "jamal_14616::update_user.dart::UpdateUser"
+
+class "jamal_14616::update_user.dart::_UpdateUserState" {
+  -GlobalKey<FormState> _formKey
+  -UserService _userService
+  -TextEditingController _nameController
+  -TextEditingController _usernameController
+  -TextEditingController _passwordController
+  -bool _isLoading
+  -String? _currentUsername
+  +void initState()
+  +void dispose()
+  -dynamic _loadCurrentUser()
+  -dynamic _updateUser()
+  +Widget build()
+}
+
+"jamal_14616::update_user.dart::_UpdateUserState" o-- "flutter::src::widgets::framework.dart::GlobalKey<FormState>"
+"jamal_14616::update_user.dart::_UpdateUserState" o-- "jamal_14616::services::user_service.dart::UserService"
+"jamal_14616::update_user.dart::_UpdateUserState" o-- "flutter::src::widgets::editable_text.dart::TextEditingController"
+"flutter::src::widgets::framework.dart::State" <|-- "jamal_14616::update_user.dart::_UpdateUserState"
+
+class "jamal_14616::welcome.dart::SplashScreen" {
+  +_SplashScreenState createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "jamal_14616::welcome.dart::SplashScreen"
+
+class "jamal_14616::welcome.dart::_SplashScreenState" {
+  +void initState()
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::State" <|-- "jamal_14616::welcome.dart::_SplashScreenState"
+
+
+@enduml

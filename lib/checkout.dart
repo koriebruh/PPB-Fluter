@@ -1,20 +1,21 @@
 import 'package:flutter/material.dart';
 
-class Checkout extends StatelessWidget {
+class CheckoutPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final List<Map<String, dynamic>> cartItems = ModalRoute.of(context)!
-        .settings
-        .arguments as List<Map<String, dynamic>>;
+    // Menerima data yang dikirim dari DetailPage
+    final List<Map<String, dynamic>> cartItems =
+    ModalRoute.of(context)!.settings.arguments as List<Map<String, dynamic>>;
     double totalAmount = 0;
 
+    // Hitung total amount (produk + ongkir)
     cartItems.forEach((item) {
-      totalAmount += item['product'].price * item['quantity'];
+      totalAmount += item['product']['price'] * item['quantity'];
     });
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Checkout'),
+        title: const Text('Checkout'),
         backgroundColor: Color(0xFFFCFCFC),
         elevation: 0,
       ),
@@ -25,7 +26,7 @@ class Checkout extends StatelessWidget {
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
-                colors: [Color(0xFFFAFAFA), Color(0xFFFFFFFF)], ///adsa
+                colors: [Color(0xFFFAFAFA), Color(0xFFFFFFFF)],
               ),
             ),
             child: Padding(
@@ -38,7 +39,7 @@ class Checkout extends StatelessWidget {
                     children: [
                       Text(
                         'Total Pembayaran:',
-                        style: TextStyle(fontSize: 20, color: Colors.white70,fontFamily: 'JetBrainsMono',),
+                        style: TextStyle(fontSize: 20, color: Colors.white70, fontFamily: 'JetBrainsMono'),
                       ),
                       Text(
                         'Rp $totalAmount',
@@ -84,8 +85,7 @@ class Checkout extends StatelessWidget {
                         ),
                       );
                     },
-                    icon: Icon(Icons.check_circle_outline,
-                        color: Color(0xFF5A67F2)),
+                    icon: Icon(Icons.check_circle_outline, color: Color(0xFF5A67F2)),
                     label: Text('Bayar', style: TextStyle(fontSize: 18)),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.white,

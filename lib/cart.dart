@@ -193,7 +193,7 @@ class _CartState extends State<Cart> {
                   onPressed: () {
                     Navigator.pushNamed(
                       context,
-                      '/checkout',
+                      '/cek_ongkir',
                       arguments: widget.cartItems,
                     );
                   },

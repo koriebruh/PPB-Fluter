@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:restofatlem_14624/cek_ongkir.dart';
 import 'package:restofatlem_14624/welcome.dart';
 import 'package:restofatlem_14624/login.dart';
 import 'package:restofatlem_14624/dashboard.dart';
@@ -6,6 +7,9 @@ import 'package:restofatlem_14624/update_user.dart';
 import 'package:restofatlem_14624/register.dart';
 import 'package:restofatlem_14624/cart.dart';
 import 'package:restofatlem_14624/checkout.dart';
+import 'package:dcdg/dcdg.dart';
+
+import 'detail_page.dart';
 
 void main() {
   runApp(MyApp());
@@ -29,7 +33,9 @@ class MyApp extends StatelessWidget {
         '/update-user': (context) => UpdateUser(),
         '/cart': (context) =>
             Cart(cartItems: []), // Inisialisasi dengan keranjang kosong
-        '/checkout': (context) => Checkout(),
+        '/checkout': (context) => CheckoutPage(),
+        '/cek_ongkir': (context) => CekOngkir(),
+        '/detail_page': (context) => DetailPage(),
       },
 
     );
