@@ -37,6 +37,7 @@ dependencies:
   dcdg: ^3.0.0
   http: ^1.0.2
   dropdown_search: ^5.0.6
+  mysql1: ^0.20.0
   # The following adds the Cupertino Icons font to your application.
 
 
